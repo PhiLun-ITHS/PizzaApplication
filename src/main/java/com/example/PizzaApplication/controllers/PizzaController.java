@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class PizzaController {
@@ -19,21 +20,20 @@ public class PizzaController {
         this.pizzaRepository = pizzaRepository;
     }
 
-    @GetMapping("/pizzas")
-    public List<Pizza> pizzas(){
-
+    @GetMapping("/")
+    public List<Pizza> getAllPizzas(){
         return pizzaRepository.findAll();
     }
 
-    @GetMapping("/pizzas/{id}")
-    public ResponseEntity<Pizza> findPizzaById(@PathVariable("id") Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<String> findPizzaById(@PathVariable("id") Long id){
 
         Pizza pizza = pizzaRepository.findPizzaById(id);
 
         if (pizza == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Pizza ID: " + id);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(pizza);
+        return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
     }
 
     @RequestMapping(value = "/={name}")
@@ -41,7 +41,7 @@ public class PizzaController {
         Pizza pizza = pizzaRepository.findPizzaByName(name);
 
         if(pizza == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Pizza name: " + name);
         }
         return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
     }
@@ -51,9 +51,24 @@ public class PizzaController {
         pizzaRepository.save(pizza);
     }
 
-    @DeleteMapping("/pizzas/{id}")
+    @DeleteMapping("/{id}")
     public void deletePizza(@PathVariable("id") Long id){
         pizzaRepository.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updatePizza(@RequestBody Pizza pizza, @PathVariable Long id) {
+
+        Optional<Pizza> pizzaOptional = pizzaRepository.findById(id);
+
+        if (!pizzaOptional.isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid ID: " + id);
+
+        pizza.setId(id);
+
+        pizzaRepository.save(pizza);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Pizza (" + id + ") successfully updated");
     }
 
 }

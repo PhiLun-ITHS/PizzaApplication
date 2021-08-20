@@ -18,7 +18,7 @@ class PizzaControllerTest {
     void getAllPizzas() {
 
         PizzaController pizzaController = new PizzaController(pizzaRepository);
-        assertThat(pizzaController.pizzas()).isEmpty();
+        assertThat(pizzaController.getAllPizzas()).isEmpty();
     }
 
 }
