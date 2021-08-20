@@ -46,6 +46,16 @@ public class PizzaController {
         return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
     }
 
+    @RequestMapping(value = "/=i{ingredients}")
+    public ResponseEntity<String> findPizzaByIngredients(@PathVariable("ingredients") String ingredients) {
+        Pizza pizza = pizzaRepository.findPizzaByIngredients(ingredients);
+
+        if(pizza == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Ingredients name: " + ingredients);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
+    }
+
     @PostMapping("/")
     public void addPizza(@RequestBody Pizza pizza){
         pizzaRepository.save(pizza);
@@ -70,5 +80,4 @@ public class PizzaController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Pizza (" + id + ") successfully updated");
     }
-
 }
