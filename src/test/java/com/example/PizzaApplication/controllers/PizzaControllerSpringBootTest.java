@@ -16,6 +16,6 @@ class PizzaControllerSpringBootTest {
 
     @Test
     void getAllPizzas(){
-        assertThat(pizzaController.getAllPizzas()).isEmpty();
+        assertThat(pizzaController.getAllPizzas()).hasSize(3);
     }
 }

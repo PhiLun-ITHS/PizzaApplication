@@ -18,7 +18,7 @@ class PizzaMVCTest {
 
     @Test
     void getAllPizzasReturnsOnePizza() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/pizzas"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/1"))
                 .andExpect(status().is(200));
     }
 }

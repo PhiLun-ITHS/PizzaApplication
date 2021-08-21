@@ -25,12 +25,14 @@ class PizzaEndToEndTest {
     void getPizzasReturnsListOfPizzas(){
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:"+port+"/pizzas"))
+                .uri(URI.create("http://localhost:"+port+"/"))
                 .build();
 
         var response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
         assertThat(response.statusCode()).isEqualTo(200);
-        assertThat(response.body()).isEqualTo("[{\"id\":1,\"name\":\"Vesuvio\",\"ingredients\":\"Tomatsås, Ost, Skinka\",\"price\":75}]");
+        assertThat(response.body()).isEqualTo("[{\"id\":1,\"name\":\"Margherita\",\"ingredients\":\"Tomatsås, Ost\",\"price\":75}," +
+                "{\"id\":2,\"name\":\"Vesuvio\",\"ingredients\":\"Tomatsås, Ost, Skinka\",\"price\":80}," +
+                "{\"id\":3,\"name\":\"Capricciosa\",\"ingredients\":\"Tomatsås, Ost, Skinka, Champinjon\",\"price\":85}]");
     }
 }
