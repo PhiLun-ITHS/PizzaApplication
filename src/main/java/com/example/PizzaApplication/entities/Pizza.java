@@ -18,12 +18,6 @@ public class Pizza {
     public Pizza() {
     }
 
-    public Pizza(String name, String ingredients, int price) {
-        this.name = name;
-        this.ingredients = ingredients;
-        this.price = price;
-    }
-
     public Pizza(Long id, String name, String ingredients, int price) {
         this.id = id;
         this.name = name;
@@ -65,9 +59,6 @@ public class Pizza {
 
     @Override
     public String toString() {
-        return "(id: " + id +
-                ") - (Pizza: " + name +
-                ") - (Ingredients: " + ingredients +
-                ") - (Price: " + price + ")";
+        return name + " ";
     }
 }

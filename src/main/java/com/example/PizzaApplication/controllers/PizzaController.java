@@ -20,38 +20,18 @@ public class PizzaController {
         this.pizzaRepository = pizzaRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("/pizzas")
     public List<Pizza> getAllPizzas(){
         return pizzaRepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/pizza/{id}")
     public ResponseEntity<String> findPizzaById(@PathVariable("id") Long id){
 
         Pizza pizza = pizzaRepository.findPizzaById(id);
 
         if (pizza == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Pizza ID: " + id);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
-    }
-
-    @RequestMapping(value = "/={name}")
-    public ResponseEntity<String> findPizzaByName(@PathVariable("name") String name) {
-        Pizza pizza = pizzaRepository.findPizzaByName(name);
-
-        if(pizza == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Pizza name: " + name);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
-    }
-
-    @RequestMapping(value = "/=i{ingredients}")
-    public ResponseEntity<String> findPizzaByIngredients(@PathVariable("ingredients") String ingredients) {
-        Pizza pizza = pizzaRepository.findPizzaByIngredients(ingredients);
-
-        if(pizza == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Ingredients name: " + ingredients);
         }
         return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
     }
@@ -79,5 +59,25 @@ public class PizzaController {
         pizzaRepository.save(pizza);
 
         return ResponseEntity.status(HttpStatus.OK).body("Pizza (" + id + ") successfully updated");
+    }
+
+    @RequestMapping(value = "/name/search={name}")
+    public ResponseEntity<String> findPizzaByName(@PathVariable("name") String name) {
+        Pizza pizza = pizzaRepository.findPizzaByName(name);
+
+        if(pizza == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Pizza name: " + name);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
+    }
+
+    @RequestMapping(value = "/ingredients/search={ingredients}")
+    public ResponseEntity<String> findPizzaByIngredients(@PathVariable("ingredients") String ingredients) {
+        Pizza pizza = pizzaRepository.findPizzaByIngredients(ingredients);
+
+        if(pizza == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Ingredients name: " + ingredients);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
     }
 }
