@@ -11,10 +11,13 @@ public class PizzaOrder {
     private int orderId;
     @Basic
     private String orderContent;
+    @Basic
+    private int totalPrice;
 
-    public PizzaOrder(int orderId, String orderContent) {
+    public PizzaOrder(int orderId, String orderContent, int totalPrice) {
         this.orderId = orderId;
         this.orderContent = orderContent;
+        this.totalPrice = totalPrice;
     }
 
     public PizzaOrder() {
@@ -34,6 +37,14 @@ public class PizzaOrder {
 
     public void setOrderContent(String orderContent) {
         this.orderContent = orderContent;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
 }

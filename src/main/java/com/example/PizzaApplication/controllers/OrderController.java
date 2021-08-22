@@ -27,11 +27,6 @@ public class OrderController {
         this.pizzaRepository = pizzaRepository;
     }
 
-    private int generateOrderId() {
-        Random random = new Random();
-        return random.nextInt(10000);
-    }
-
     @PostMapping("/order")
     public ResponseEntity<String> orderPizzas(@RequestBody ArrayList<Pizza> orderList){
 
@@ -50,10 +45,18 @@ public class OrderController {
             totalPizzas++;
         }
         int orderId = generateOrderId();
-        pizzaOrderRepository.save(new PizzaOrder(orderId, pizzaNames.toString()));
+        pizzaOrderRepository.save(new PizzaOrder(orderId, pizzaString(pizzaNames), totalPrice));
 
         return ResponseEntity.status(HttpStatus.OK).body("Your pizza order (" + orderId + ") was successful" +
-                "\r\nPizza (" + totalPizzas + "): " + pizzaNames.toString().substring(1, pizzaNames.toString().length() - 1) +
-                "\r\nTotal price: " + totalPrice + ":-");
+                "\r\nPizza (" + totalPizzas + "): " + pizzaString(pizzaNames) + "\r\nTotal price: " + totalPrice + ":-");
+    }
+
+    private int generateOrderId() {
+        Random random = new Random();
+        return random.nextInt(10000);
+    }
+
+    private String pizzaString(List<Pizza> pizzaNames) {
+        return pizzaNames.toString().substring(1, pizzaNames.toString().length() - 1);
     }
 }
