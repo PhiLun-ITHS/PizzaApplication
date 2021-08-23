@@ -1,6 +1,5 @@
 package com.example.PizzaApplication.entities;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -9,9 +8,7 @@ public class PizzaOrder {
 
     @Id
     private int orderId;
-    @Basic
     private String orderContent;
-    @Basic
     private int totalPrice;
 
     public PizzaOrder(int orderId, String orderContent, int totalPrice) {
