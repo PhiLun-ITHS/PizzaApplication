@@ -44,9 +44,9 @@ public class PizzaController {
 
         if(checkPizza == null){
             pizzaRepository.save(pizza);
-            return ResponseEntity.status(HttpStatus.OK).body(printPizza(pizza));
+            return ResponseEntity.status(HttpStatus.CREATED).body(printPizza(pizza));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pizza with that name already exist (" + pizza.getName() + ")");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Pizza with that name already exist (" + pizza.getName() + ")");
     }
 
     @DeleteMapping("/{id}")
