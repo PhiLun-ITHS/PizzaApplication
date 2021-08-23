@@ -33,17 +33,33 @@ public class PizzaController {
         if (pizza == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Pizza ID: " + id);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
+
+        return ResponseEntity.status(HttpStatus.OK).body(printPizza(pizza));
     }
 
     @PostMapping("/")
-    public void addPizza(@RequestBody Pizza pizza){
-        pizzaRepository.save(pizza);
+    public ResponseEntity<String> addPizza(@RequestBody Pizza pizza){
+
+        Pizza checkPizza = pizzaRepository.findPizzaByName(pizza.getName());
+
+        if(checkPizza == null){
+            pizzaRepository.save(pizza);
+            return ResponseEntity.status(HttpStatus.OK).body(printPizza(pizza));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pizza with that name already exist (" + pizza.getName() + ")");
     }
 
     @DeleteMapping("/{id}")
-    public void deletePizza(@PathVariable("id") Long id){
+    public ResponseEntity<String> deletePizza(@PathVariable("id") Long id){
+
+        Pizza checkId = pizzaRepository.findPizzaById(id);
+
+        if(checkId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid ID: " + id);
+        }
+
         pizzaRepository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Pizza with id: (" + id + ") successfully deleted");
     }
 
     @PutMapping("/{id}")
@@ -68,16 +84,23 @@ public class PizzaController {
         if(pizza == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Pizza name: " + name);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(printPizza(pizza));
     }
 
     @RequestMapping(value = "/ingredients/search={ingredients}")
     public ResponseEntity<String> findPizzaByIngredients(@PathVariable("ingredients") String ingredients) {
+
         Pizza pizza = pizzaRepository.findPizzaByIngredients(ingredients);
 
         if(pizza == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Ingredients name: " + ingredients);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(pizza.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(printPizza(pizza));
+
     }
+
+    private String printPizza(Pizza pizza) {
+        return "id: (" + pizza.getId() + ")\nname: (" + pizza.getName() + ")\ningredients: (" + pizza.getIngredients() + ")\nprice: (" + pizza.getPrice() + ")";
+    }
+
 }
