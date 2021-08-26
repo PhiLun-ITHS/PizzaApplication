@@ -29,14 +29,13 @@ class PizzaMVCTest {
     }
 
     @Test
-    void addPizza() throws Exception{
+    void addOnePizza() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new Pizza(10L, "Vesuvio", "Tomatsås, Ost, Skinka", 80)))
+                        .content(asJsonString(new Pizza(10L, "Bussola", "Tomatsås, Ost, Skinka, Räkor", 85)))
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated());
-
     }
 
     public static String asJsonString(final Object obj) {

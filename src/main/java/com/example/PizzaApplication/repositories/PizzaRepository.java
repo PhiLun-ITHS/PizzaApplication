@@ -9,4 +9,6 @@ public interface PizzaRepository extends JpaRepository<Pizza, Long> {
     Pizza findPizzaByName(String name);
     Pizza findPizzaById(Long id);
     Pizza findPizzaByIngredients(String ingredients);
+
+    //Pizza findPizzaByIngredientsContains(String ingredients);
 }

@@ -66,14 +66,16 @@ public class PizzaController {
     public ResponseEntity<Object> updatePizza(@RequestBody Pizza pizza, @PathVariable Long id) {
 
         Optional<Pizza> pizzaOptional = pizzaRepository.findById(id);
-
         if (!pizzaOptional.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid ID: " + id);
 
+        Pizza checkPizza = pizzaRepository.findPizzaByName(pizza.getName());
+        if(checkPizza != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Pizza with that name already exist (" + pizza.getName() + ")");
+        }
+
         pizza.setId(id);
-
         pizzaRepository.save(pizza);
-
         return ResponseEntity.status(HttpStatus.OK).body("Pizza (" + id + ") successfully updated");
     }
 
